@@ -20,7 +20,7 @@ Author : Mohammad Reza Zangeneh @ MyBBIran @ Iran
 	
 if ($mybb->settings['myzp_soap'] == 0)
 {
-	$client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', array('encoding'=>'UTF-8'));
+	$client = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl', array('encoding'=>'UTF-8'));
 	$res = $client->PaymentRequest(
 	array(
 					'MerchantID' 	=> $merchantID ,
@@ -35,7 +35,7 @@ if ($mybb->settings['myzp_soap'] == 0)
 }
 if ($mybb->settings['myzp_soap'] == 1)
 {
-	$client = new nusoap_client('https://www.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
+	$client = new nusoap_client('https://de.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
 	$res = $client->call('PaymentRequest', array(
 			array(
 					'MerchantID' 	=> $merchantID ,
