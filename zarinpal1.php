@@ -15,7 +15,7 @@ Author : Mohammad Reza Zangeneh @ MyBBIran @ Iran
 	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."myzp WHERE num=$num");
     $myzp = $db->fetch_array($query);
 	$amount = $myzp['price']; //Amount will be based on Toman
-	$callBackUrl = "{$mybb->settings['bburl']}/zarinpal_verfywg.php?num={$myzp['num']}";
+	$callBackUrl = "{$mybb->settings['bburl']}/zarinpal_verfy.php?num={$myzp['num']}";
 	$desc = "{$myzp['description']}  ({$mybb->user['username']})";
 	
 if ($mybb->settings['myzp_soap'] == 0)
@@ -51,9 +51,8 @@ if ($mybb->settings['myzp_soap'] == 1)
 	));
 }
 	
-	
 	if($res->Status == 100){
-	Header('Location: https://www.zarinpal.com/pg/StartPay/' . $res->Authority );
+	Header('Location: https://www.zarinpal.com/pg/StartPay/' . $res->Authority . '/ZarinGate');	
 	}else{
 		echo'ERR:'.$res->Status ;
 	}
