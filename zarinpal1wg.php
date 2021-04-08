@@ -1,10 +1,9 @@
 <?php
 
 /* MyBB Instant Payment By Zarinpal Ver:4.1
-Author : Mohammad Reza Zangeneh @ MyBBIran @ Iran 
+Author : Armin Zahedi @ MyBBIran @ Iran 
 */
 
-	include_once('nusoap.php');
 	define("IN_MYBB", "1");
 	require("./global.php");
 	
@@ -17,44 +16,33 @@ Author : Mohammad Reza Zangeneh @ MyBBIran @ Iran
 	$amount = $myzp['price']; //Amount will be based on Toman
 	$callBackUrl = "{$mybb->settings['bburl']}/zarinpal_verfywg.php?num={$myzp['num']}";
 	$desc = "{$myzp['description']}  ({$mybb->user['username']})";
-	
-if ($mybb->settings['myzp_soap'] == 0)
-{
-	$client = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl', array('encoding'=>'UTF-8'));
-	$res = $client->PaymentRequest(
-	array(
-					'MerchantID' 	=> $merchantID ,
-					'Amount' 		=> $amount ,
-					'Description' 	=> $desc ,
-					'Email' 		=> '' ,
-					'Mobile' 		=> '' ,
-					'CallbackURL' 	=> $callBackUrl
 
-		)
-	);
-}
-if ($mybb->settings['myzp_soap'] == 1)
-{
-	$client = new nusoap_client('https://de.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
-	$res = $client->call('PaymentRequest', array(
-			array(
-					'MerchantID' 	=> $merchantID ,
-					'Amount' 		=> $amount ,
-					'Description' 	=> $desc ,
-					'Email' 		=> '' ,
-					'Mobile' 		=> '' ,
-					'CallbackURL' 	=> $callBackUrl
+$data = array(
+	'merchant_id' => $merchantID,
+	'amount' => $amount * 10,
+	'description' => $desc,
+	'callback_url' => $callBackUrl
+);
+$jsonData = json_encode($data);
 
-		)
-	
-	
-	));
-}
-	
-	
-	if($res->Status == 100){
-	Header('Location: https://www.zarinpal.com/pg/StartPay/' . $res->Authority );
+$ch = curl_init('https://api.zarinpal.com/pg/v4/payment/request.json');
+curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v4');
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	'Content-Type: application/json',
+	'Content-Length: ' . strlen($jsonData)
+));
+
+$result = curl_exec($ch);
+$err = curl_error($ch);
+$result = json_decode($result, true, JSON_PRETTY_PRINT);
+curl_close($ch);
+
+	if($result['data']['code'] == 100){
+	Header('Location: https://www.zarinpal.com/pg/StartPay/' . $result['data']['authority']);
 	}else{
-		echo'ERR:'.$res->Status ;
+		echo'ERR:'.$result['errors']['code'] ;
 	}
 ?>

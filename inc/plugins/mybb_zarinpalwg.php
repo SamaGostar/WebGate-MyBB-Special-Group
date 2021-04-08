@@ -23,7 +23,7 @@ function mybb_zarinpalwg_info()
 	"author"   => "Mohammad Zangeneh",
 	"authorsite"   => "http://www.MyBBIran.com/",
 	"version"    => "4.1",
-	"compatibility"   => "16*",
+	"compatibility"   => "18*",
 	);
 }
 
@@ -107,15 +107,15 @@ function insertText(value, textarea)
 	'gid' => intval($gid));
     $db->insert_query('settings',$myzp4);
 
-	$myzp5 = array(
-	'name' => 'myzp_soap',
-	'title' =>'Soap / NuSoap',
-	'description' =>'در صورتی که Soap روی سرور شما فعال نیست ، NuSoap را انتخاب کنید . (در صورتی که در این مورد اطلاعی ندارید ، NuSoap را انتخاب کنید)',
-	'optionscode' => 'select\n0=Soap\n1=NuSoap',
-	'value' =>'0',
-	'disporder' => 7,
-	'gid' => intval($gid));
-    $db->insert_query('settings',$myzp5);
+//	$myzp5 = array(
+//	'name' => 'myzp_soap',
+//	'title' =>'Soap / NuSoap',
+//	'description' =>'در صورتی که Soap روی سرور شما فعال نیست ، NuSoap را انتخاب کنید . (در صورتی که در این مورد اطلاعی ندارید ، NuSoap را انتخاب کنید)',
+//	'optionscode' => 'select\n0=Soap\n1=NuSoap',
+//	'value' =>'0',
+//	'disporder' => 7,
+//	'gid' => intval($gid));
+//    $db->insert_query('settings',$myzp5);
 	
 	$myzp6 = array(
 	'name' => 'myzp_note',
@@ -197,7 +197,7 @@ function insertText(value, textarea)
 	 $db->insert_query("tasks", $myzp_task);
 
 	
-	    rebuildsettings();
+	 //   rebuildsettings();
 
 
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."myzp` (
@@ -250,14 +250,14 @@ global $db;
         $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_uid', 'myzps')");
         $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_merchant', 'myzps')");
         $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_pm', 'myzps')");	
-        $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_soap', 'myzps')");
+        $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_soap', 'null')");
         $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_note', 'myzps')");	
         $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_ban', 'myzps')");										
         $db->query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN('myzp_bang', 'myzps')");										
 		$db->query("DELETE FROM ".TABLE_PREFIX."settinggroups where name='myzps'");
 	    $db->delete_query("tasks", "file='myzp'");
 
-		rebuildsettings();
+		//rebuildsettings();
 }
  
 function mybb_zarinpalwg_activate()
@@ -368,7 +368,7 @@ global $db;
     $db->query("DELETE FROM ".TABLE_PREFIX."templates WHERE title='myzp_no_list'");	
     $db->query("DELETE FROM ".TABLE_PREFIX."templates WHERE title='myzp_payinfo'");	
 	
-	rebuildsettings();
+//	rebuildsettings();
 }
 
 function myzpzg_plugin_admin_cp($sub_menu)

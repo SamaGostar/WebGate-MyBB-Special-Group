@@ -1,7 +1,7 @@
 <?php
 
 /* MyBB Instant Payment By Zarinpal Ver:4.1
-Author : Mohammad Reza Zangeneh @ MyBBIran @ Iran 
+Author : Armin Zahedi @ MyBBIran @ Iran 
 */
 	
 	define("IN_MYBB", "1");
